@@ -1,0 +1,18 @@
+# Start docker with local files available
+$ sudo docker run -it -v \
+	~/_source/PiMonsters_RoverProject/SightCode/ImageDataset:/ImageDataset \
+	gcr.io/tensorflow/tensorflow:latest-devel
+
+
+# Change into the virtual root directory to see all files
+$ cd /
+
+# Run the trainer using our input data
+(In Docker)
+python tensorflow/tensorflow/examples/image_retraining/retrain.py \
+--bottleneck_dir = /ImageDataset/bottlenecks \
+--how_many_training_steps 500 \
+--model_dir = /ImageDataset/inception \
+--output_graph = /ImageDataset/retrained_graph.pb \
+--output_labels= /ImageDataset/retrained_labels.txt \
+--image_dir /ImageDataset/Train
