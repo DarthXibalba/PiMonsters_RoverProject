@@ -1,0 +1,3 @@
+# Ignore unneeded directories created from classifier training
+bottlenecks
+inception

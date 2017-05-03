@@ -10,38 +10,44 @@ import tensorflow as tf
 
 
 
-TEST_PATH = "../tf_classifier/ImageDataset/Test/"
-TEST_CLASS = "Pepsi"
-TEST_IMG = "pepsi_can_2.jpg"
-
-RETRAIN_LABELS = "../tf_classifier/retrained_labels_5000.txt"
-RETRAIN_GRAPH = "../tf_classifier/retrained_graph_5000.pb"
+TEST_SET_PATH = "../tf_classifier/ImageDataset/Test/"
+RETRAIN_LABELS = "../tf_classifier/retrained_labels.txt"
+RETRAIN_GRAPH = "../tf_classifier/retrained_graph_50000.pb"
 
 
 
-if __name__ == '__main__':
-    if not os.path.exists(TEST_PATH):
-        sys.exit("Test image path does not exist!")
+def getImageSet(image_set_path):
+    """
+    Gets a dictionary containing all the images in the given path.
+    Includes the imageClass and imagePath.
+    """
+    image_set = {}
+    classes = os.listdir(image_set_path)
     
-    # Find all test images
-    test_classes = os.listdir(TEST_PATH)
-    test_images = {}
-    for testClass in test_classes:
-        test_images[testClass] = os.listdir(TEST_PATH +testClass)
-    
+    for testClass in classes:
+        for img in os.listdir(image_set_path +testClass):
+            imgInfo = { 'class' : testClass.lower(), 'path' : (image_set_path +testClass +"/" +img) }
+            image_set[img.split(".")[0]] = imgInfo
+
+    return image_set
+
+
+def classifyImage(retrain_graph, retrain_labels, query_path, pathType="image_set", printInfo=True):
+    """
+    """
     # Loads label file & strips off '/r'
-    label_lines = [line.rstrip() for line in tf.gfile.GFile(RETRAIN_LABELS)]
+    class_labels = [line.rstrip() for line in tf.gfile.GFile(retrain_labels)]
     
     # Unpersists graph from file
-    with tf.gfile.FastGFile(RETRAIN_GRAPH, 'rb') as f:
+    with tf.gfile.FastGFile(retrain_graph, 'rb') as f:
         graph_def = tf.GraphDef()
         graph_def.ParseFromString(f.read())
         _ = tf.import_graph_def(graph_def, name='')
         
+    # Get prediction/classification info
     with tf.Session() as sess:
         # Read in the test image
-        test_img_path = TEST_PATH +TEST_CLASS +"/" +TEST_IMG
-        testImg = tf.gfile.FastGFile(test_img_path, 'rb').read()
+        testImg = tf.gfile.FastGFile(query_path, 'rb').read()
         
         # Feed the test image as input to the graph and get 1st prediction
         softmax_tensor = sess.graph.get_tensor_by_name('final_result:0')        
@@ -49,12 +55,42 @@ if __name__ == '__main__':
         
         # Sort labels of 1st prediction in order of confidence
         top_k = predicts[0].argsort()[-len(predicts[0]):][::-1]
-        
-        # Display information
-        print('\nUsing labels: %s' % (RETRAIN_LABELS))
-        print('Classifying: %s\n' % (TEST_IMG))
-        for node_id in top_k:
-            human_string = label_lines[node_id]
-            score = predicts[0][node_id]
-            print('%s (score = %.5f)' % (human_string, score))
-        
+    sess.close()
+    
+    # Parse classification info
+    classifyInfo = []
+    for i in top_k:
+        classifyInfo.append({ 'score' : predicts[0][i], 'label' : class_labels[i] })
+    
+    # Display information
+    if printInfo:
+        print('\nUsing graph model: "%s"' % retrain_graph)
+        print('\nImage:\t"%s"' % query_path.split("/")[-1] )
+        for info in classifyInfo:
+            print( '%s\t(score = %.5f)' % (info['label'], info['score']) )
+            
+    return classifyInfo
+
+'''
+def classifyImageSet(retrain_graph, retrain_labels, set_path, printInfo=True):
+'''     
+
+def calcImageSetAccuracy(printInfo=True):
+    pass
+
+
+
+if __name__ == '__main__':
+    # Check that all input paths/files are valid
+    for img_path in [TEST_SET_PATH, RETRAIN_LABELS, RETRAIN_GRAPH]:
+        if not os.path.exists(img_path):
+            sys.exit("%s does not exist!" % img_path)
+    
+    
+    test_class = "Sprite"
+    test_img = "sprite_logo_3.jpg"
+    test_img_path = TEST_SET_PATH +test_class +"/" +test_img
+    
+    image_classification =  classifyImage(RETRAIN_GRAPH, RETRAIN_LABELS, test_img_path)
+    
+    image_set = getImageSet(TEST_SET_PATH)
