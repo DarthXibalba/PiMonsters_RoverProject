@@ -35,11 +35,11 @@ class RPiServo:
         self.pwm.set_pwm_freq(servo_freq)
 
     def open_claw(self):
-        off = 215
+        off = 125
         self.pwm.set_pwm(self.channel, self.on, off)
 
     def close_claw(self):
-        off = 415
+        off = 425
         self.pwm.set_pwm(self.channel, self.on, off)
 
     def move_servo(self, off):
@@ -56,7 +56,7 @@ if __name__ == "__main__":
 
     servo1.set_freq(60)
     servo2.set_freq(60)
-    servo_reset = 200
+    servo_reset = 300
     ticks = servo_reset
     servo_move = 10
 
@@ -74,10 +74,12 @@ if __name__ == "__main__":
         elif command == "moveL":
             ticks = servo_reset + servo_move
             servo2.move_servo(ticks)
+            print ticks
 
         elif command == "moveR":
             ticks = servo_reset - servo_move
             servo2.move_servo(ticks)
+            print ticks
 
         elif command == "reset":
             servo2.move_servo(servo_reset)
