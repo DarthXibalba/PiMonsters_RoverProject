@@ -72,12 +72,12 @@ if __name__ == "__main__":
             servo1.close_claw()
 
         elif command == "moveL":
-            ticks = servo_reset + servo_move
+            ticks = ticks + servo_move
             servo2.move_servo(ticks)
             print ticks
 
         elif command == "moveR":
-            ticks = servo_reset - servo_move
+            ticks = ticks - servo_move
             servo2.move_servo(ticks)
             print ticks
 
