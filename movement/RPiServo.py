@@ -31,19 +31,19 @@ class RPiServo:
         self.pwm = Adafruit_PCA9685.PCA9685()
         self.on = 0
 
-        def set_freq(self, servo_freq):
-            self.pwm.set_pwm_freq(servo_freq)
+    def set_freq(self, servo_freq):
+        self.pwm.set_pwm_freq(servo_freq)
 
-        def open_claw(self):
-            off = 215
-            self.pwm.set_pwm(self.channel, self.on, off)
+    def open_claw(self):
+        off = 215
+        self.pwm.set_pwm(self.channel, self.on, off)
 
-        def close_claw(self):
-            off = 415
-            self.pwm.set_pwm(self.channel, self.on, off)
+    def close_claw(self):
+        off = 415
+        self.pwm.set_pwm(self.channel, self.on, off)
 
-        def move_servo(self, off):
-            self.pwm.set_pwm(self.channel, self.on, off)
+    def move_servo(self, off):
+        self.pwm.set_pwm(self.channel, self.on, off)
 
 
 if __name__ == "__main__":
@@ -55,6 +55,7 @@ if __name__ == "__main__":
     # servo6 = RPiServo(9)
 
     servo1.set_freq(60)
+    servo2.set_freq(60)
     servo_reset = 200
     ticks = servo_reset
     servo_move = 10
