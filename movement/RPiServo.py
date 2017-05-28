@@ -2,28 +2,6 @@ from __future__ import division
 import time
 import Adafruit_PCA9685
 
-# class RPiServo:
-#     def __init__(self, servo_min, servo_max, servo_freq):
-#         self.servo_min = servo_min
-#         self.servo_max = servo_max
-#         self.servo_freq = servo_freq
-#         self.pwm = Adafruit_PCA9685.PCA9685()
-#
-#     def test_servos(self):
-#         self.pwm.set_pwm_freq(self.servo_freq)
-#         self.pwm.set_pwm(self.servo_min, self.servo_max)
-#
-# if __name__ == "__main__":
-#     my_min = 150
-#     my_max = 600
-#     my_freq = 60
-#
-#     my_servo = RPiServo(my_min, my_max, my_freq)
-#
-#     while(1):
-#         my_servo.move_servo()
-#         time.sleep(5)
-
 
 class RPiServo:
     def __init__(self, channel):
@@ -58,7 +36,9 @@ if __name__ == "__main__":
     servo2.set_freq(60)
     servo_reset = 300
     ticks = servo_reset
-    servo_move = 10
+    servo_move = 15
+    servo_min = 150
+    servo_max = 600
 
     while(1):
         print("\n")
@@ -71,15 +51,21 @@ if __name__ == "__main__":
         elif command == "close":
             servo1.close_claw()
 
-        elif command == "moveL":
+        elif command == "move1":
             ticks = ticks + servo_move
             servo2.move_servo(ticks)
             print ticks
 
-        elif command == "moveR":
+        elif command == "move2":
             ticks = ticks - servo_move
             servo2.move_servo(ticks)
             print ticks
+
+        elif command == "move3":
+            servo2.move_servo(servo_min)
+
+        elif command == "move4":
+            servo2.move_servo(servo_min)
 
         elif command == "reset":
             servo2.move_servo(servo_reset)
