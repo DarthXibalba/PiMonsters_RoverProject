@@ -65,7 +65,7 @@ if __name__ == "__main__":
             servo2.move_servo(servo_min)
 
         elif command == "move4":
-            servo2.move_servo(servo_min)
+            servo2.move_servo(servo_max)
 
         elif command == "reset":
             servo2.move_servo(servo_reset)
