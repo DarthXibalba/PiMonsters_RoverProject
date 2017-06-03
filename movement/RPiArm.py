@@ -22,9 +22,9 @@ class RPiArm:
         # off = 425
 
     def rotate_claw(self):
-        self.servo2.move_servo(600)
+        self.servo2.move_servo(150)
 
     def rotate_base(self):
         # 0 degrees = 150
         # 180 degrees = 600
-        self.servo6.move_servo(375)
+        self.servo6.move_servo(600)
