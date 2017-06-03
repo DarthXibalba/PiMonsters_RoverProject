@@ -20,8 +20,12 @@ if __name__ == "__main__":
         elif command == "close":
             arm.close_claw()
 
+        elif command == "rotate claw":
+            arm.rotate_claw()
+
         elif command == "rotate base":
             arm.rotate_base()
+
 
         # elif command == "move1":
         #     ticks = ticks + servo_move
