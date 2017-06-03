@@ -35,7 +35,7 @@ class RPiArm:
         # 180 degrees = 600
 
         if position == "left":
-            self.servo6.move_servo(600)
+            self.servo6.move_servo(400)
 
         elif position == "right":
             self.servo6.move_servo(150)
