@@ -18,5 +18,8 @@ class RPiArm:
         # off = 125
 
     def close_claw(self):
-        self.servo1.move_servo(425)
+        self.servo1.move_servo(500)
         # off = 425
+
+    # def rotate_base(self):
+    #     self.servo6.move_servo()
