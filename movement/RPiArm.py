@@ -27,4 +27,4 @@ class RPiArm:
     def rotate_base(self):
         # 0 degrees = 150
         # 180 degrees = 600
-        self.servo6.move_servo(600)
+        self.servo6.move_servo(375)
