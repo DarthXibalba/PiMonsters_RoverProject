@@ -6,8 +6,8 @@ import RPiArm
 if __name__ == "__main__":
     arm = RPiArm.RPiArm()
 
-    ticks = servo_reset
-    servo_move = 15
+    # ticks = servo_reset
+    # servo_move = 15
 
     while(1):
         print("\n")
