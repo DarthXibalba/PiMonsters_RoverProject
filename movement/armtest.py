@@ -15,10 +15,10 @@ if __name__ == "__main__":
         command = raw_input()
 
         if command == "open":
-            arm.open_claw()
+            arm.move_claw("open")
 
         elif command == "close":
-            arm.close_claw()
+            arm.move_claw("close")
 
         elif command == "rotate claw":
             arm.rotate_claw()
