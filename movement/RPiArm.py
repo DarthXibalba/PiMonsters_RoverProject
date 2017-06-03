@@ -21,5 +21,5 @@ class RPiArm:
         self.servo1.move_servo(525)
         # off = 425
 
-    # def rotate_base(self):
-    #     self.servo6.move_servo()
+    def rotate_base(self):
+        self.servo6.move_servo(150)
