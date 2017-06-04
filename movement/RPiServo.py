@@ -2,6 +2,8 @@ from __future__ import division
 import time
 import Adafruit_PCA9685
 
+servo_increment = 10
+servo_wait = 0.25
 
 class RPiServo:
     def __init__(self, channel, minTicks, maxTicks, resetTicks):
@@ -29,3 +31,20 @@ class RPiServo:
 
     def get_position(self):
         return self.off
+
+    def gentle_move(self, newPos):
+        if newPos < self.minTicks:
+            newPos = self.minTicks
+        elif newPos > self.maxTicks:
+            newPos = self.maxTicks
+
+        if newPos < self.off:
+            while(self.off > newPos):
+                self.off -= servo_increment
+                self.pwm.set_pwm(self.channel, self.on, self.off)
+                time.sleep(servo_wait)
+        elif newPos > self.off:
+            while(self.off < newPos):
+                self.off += servo_increment
+                self.pwm.set_pwm(self.channel, self.on, self.off)
+                time.sleep(servo_wait)

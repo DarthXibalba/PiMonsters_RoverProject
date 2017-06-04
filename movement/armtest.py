@@ -75,6 +75,11 @@ if __name__ == "__main__":
             elif ticks <= 200:
                 arm.general_move(6, 200)
 
+        elif command == "increment":
+            arm.servo5.gentle_move(600)
+
+
+
         # elif command == "move1":
         #     ticks = ticks + servo_move
         #     servo2.move_servo(ticks)
