@@ -39,7 +39,7 @@ class RPiArm:
         elif position == "backward":
             self.servo4.move_servo(125)
 
-    def move_servo5(self, position):
+    def move_servo5(self):
         self.servo5.move_servo(150)
 
     def rotate_base(self, position):
