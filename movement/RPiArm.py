@@ -27,7 +27,7 @@ class RPiArm:
         if position == "center":
             self.servo2.move_servo(380)
 
-    def move_servo3(self):
+    def move_servo3(self, position):
         if position == "backward":
             self.servo3.move_servo(150)
         elif position == "forward":
