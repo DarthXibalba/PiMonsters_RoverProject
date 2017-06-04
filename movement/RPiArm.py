@@ -7,8 +7,8 @@ import RPiServo
 class RPiArm:
     def __init__(self):
         self.servo1 = RPiServo.RPiServo(0, 125, 525, 300)
-        self.servo2 = RPiServo.RPiServo(1, 150, 600, 300)
-        self.servo3 = RPiServo.RPiServo(4, 150, 600, 300)
+        self.servo2 = RPiServo.RPiServo(1, 150, 600, 380)
+        self.servo3 = RPiServo.RPiServo(4, 150, 600, 390)
         self.servo4 = RPiServo.RPiServo(5, 125, 600, 300)
         self.servo5 = RPiServo.RPiServo(8, 150, 600, 300)
         self.servo6 = RPiServo.RPiServo(9, 200, 600, 300)
@@ -41,6 +41,8 @@ class RPiArm:
 
     def move_servo5(self):
         self.servo5.move_servo(600)
+        #forward = 150
+        #backward = 600
 
     def rotate_base(self, position):
         if position == "left":
@@ -63,3 +65,7 @@ class RPiArm:
             self.servo5.move_servo(ticks)
         elif servo_num == 6:
             self.servo6.move_servo(ticks)
+
+    def reset_all(self):
+        self.servo2.move_servo(380)
+        self.servo6.move_servo(390)
