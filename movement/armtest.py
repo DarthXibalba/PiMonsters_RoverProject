@@ -82,6 +82,8 @@ if __name__ == "__main__":
             tick_number = raw_input()
             arm.slow_move(int(servo_number), int(tick_number))
 
+        elif command == "reset":
+            arm.reset_all()
 
         # elif command == "move1":
         #     ticks = ticks + servo_move
