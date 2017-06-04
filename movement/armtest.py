@@ -76,8 +76,11 @@ if __name__ == "__main__":
                 arm.general_move(6, 200)
 
         elif command == "increment":
-            arm.servo5.gentle_move(150)
-
+            print("Enter servo number: ")
+            servo_number = raw_input()
+            print("Enter ticks: ")
+            tick_number = raw_input()
+            arm.slow_move(int(servo_number), int(tick_number))
 
 
         # elif command == "move1":

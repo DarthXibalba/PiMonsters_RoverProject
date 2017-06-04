@@ -69,3 +69,17 @@ class RPiArm:
     def reset_all(self):
         self.servo2.move_servo(380)
         self.servo6.move_servo(390)
+
+    def slow_move(self, servo_num, stopPos):
+        if servo_num == 1:
+            self.servo1.gentle_move(stopPos)
+        elif servo_num == 2:
+            self.servo2.gentle_move(stopPos)
+        elif servo_num == 3:
+            self.servo3.gentle_move(stopPos)
+        elif servo_num == 4:
+            self.servo4.gentle_move(stopPos)
+        elif servo_num == 5:
+            self.servo5.gentle_move(stopPos)
+        elif servo_num == 6:
+            self.servo6.gentle_move(stopPos)
