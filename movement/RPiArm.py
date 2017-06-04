@@ -82,12 +82,12 @@ class RPiArm:
             self.servo6.gentle_move(stopPos)
 
     def reset_all(self):
-        self.servo1.reset_servo()
-        self.servo2.reset_servo()
-        self.servo3.reset_servo()
-        self.servo4.reset_servo()
-        self.servo5.reset_servo()
         self.servo6.reset_servo()
+        self.servo5.reset_servo()
+        self.servo4.reset_servo()
+        self.servo3.reset_servo()
+        self.servo2.reset_servo()
+        self.servo1.reset_servo()
 
     def print_ticks(self, servo_num):
         if servo_num == 1:
@@ -104,7 +104,7 @@ class RPiArm:
             print self.servo6.get_position()
 
     def stand_up(self):
-        self.servo2.gentle_move(380)
-        self.servo3.gentle_move(300)
-        self.servo4.gentle_move(350)
         self.servo5.gentle_move(350)
+        self.servo4.gentle_move(350)
+        self.servo3.gentle_move(300)
+        self.servo2.gentle_move(380)
