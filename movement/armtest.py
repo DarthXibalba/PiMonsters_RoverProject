@@ -91,7 +91,7 @@ if __name__ == "__main__":
         elif command == "print":
             print("Enter servo number: ")
             servo_number = raw_input()
-            arm.print_ticks(servo_number)
+            arm.print_ticks(int(servo_number))
 
         # elif command == "move1":
         #     ticks = ticks + servo_move
