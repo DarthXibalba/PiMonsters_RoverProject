@@ -34,7 +34,7 @@ class RPiArm:
             self.servo3.move_servo(600)
 
     def move_servo4(self):
-        self.servo4.move_servo(300)
+        self.servo4.move_servo(400)
         # if position == "backward"
 
     # def move_servo5(self, position):
