@@ -12,7 +12,7 @@ class RPiServo:
         self.resetTicks = resetTicks
         self.waitTime = waitTime
         self.on = 0
-        self.off = self.resetTicks
+        self.off = 300
 
         self.pwm = Adafruit_PCA9685.PCA9685()
         self.pwm.set_pwm_freq(60)
