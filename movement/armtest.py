@@ -65,14 +65,14 @@ if __name__ == "__main__":
             if ticks < 600:
                 ticks = ticks + servo_move
                 arm.general_move(6, ticks)
-            elif ticks > 600:
+            elif ticks >= 600:
                 arm.general_move(6, 600)
 
         elif command == "d":
             if ticks > 200:
                 ticks = ticks - servo_move
                 arm.general_move(6, ticks)
-            elif ticks < 200:
+            elif ticks <= 200:
                 arm.general_move(6, 200)
 
         # elif command == "move1":
