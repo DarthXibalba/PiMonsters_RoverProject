@@ -52,10 +52,10 @@ if __name__ == "__main__":
             arm.move_servo4("backward")
 
         elif command == "move5 F":
-            arm.move_servo3("forward")
+            arm.move_servo5("forward")
 
         elif command == "move5 B":
-            arm.move_servo3("backward")
+            arm.move_servo5("backward")
 
         elif command == "general":
             print("Enter servo number: ")
