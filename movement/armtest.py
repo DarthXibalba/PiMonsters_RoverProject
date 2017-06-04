@@ -58,7 +58,7 @@ if __name__ == "__main__":
             servo_number = raw_input()
             print("Enter ticks: ")
             tick_number = raw_input()
-            arm.general_move(servo_number, tick_number)
+            arm.general_move(int(servo_number), int(tick_number))
 
         # elif command == "move1":
         #     ticks = ticks + servo_move

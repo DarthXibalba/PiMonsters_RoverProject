@@ -53,13 +53,13 @@ class RPiArm:
     def general_move(self, servo_num, ticks):
         if servo_num == 1:
             self.servo1.move_servo(ticks)
-        if servo_num == 2:
+        elif servo_num == 2:
             self.servo2.move_servo(ticks)
-        if servo_num == 3:
+        elif servo_num == 3:
             self.servo3.move_servo(ticks)
-        if servo_num == 4:
+        elif servo_num == 4:
             self.servo4.move_servo(ticks)
-        if servo_num == 5:
+        elif servo_num == 5:
             self.servo5.move_servo(ticks)
-        if servo_num == 6:
+        elif servo_num == 6:
             self.servo6.move_servo(ticks)
