@@ -9,7 +9,7 @@ class RPiArm:
         self.servo1 = RPiServo.RPiServo(0, 125, 525, 300, 0.05)
         self.servo2 = RPiServo.RPiServo(1, 150, 600, 380, 0.05)
         self.servo3 = RPiServo.RPiServo(4, 150, 600, 390, 0.05)
-        self.servo4 = RPiServo.RPiServo(5, 125, 600, 300, 0.05)
+        self.servo4 = RPiServo.RPiServo(5, 125, 600, 300, 0.3)
         self.servo5 = RPiServo.RPiServo(8, 150, 600, 300, 0.3)
         self.servo6 = RPiServo.RPiServo(9, 200, 600, 300, 0.05)
 
