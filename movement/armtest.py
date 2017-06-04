@@ -39,11 +39,11 @@ if __name__ == "__main__":
         elif command == "rotate base C":
             arm.rotate_base("center")
 
-        elif command == "move3 B":
-            arm.move_servo3("backward")
-
         elif command == "move3 F":
             arm.move_servo3("forward")
+
+        elif command == "move3 B":
+            arm.move_servo3("backward")
 
         elif command == "move4 F":
             arm.move_servo4("forward")
@@ -51,8 +51,11 @@ if __name__ == "__main__":
         elif command == "move4 B":
             arm.move_servo4("backward")
 
-        elif command == "move5":
-            arm.move_servo5()
+        elif command == "move5 F":
+            arm.move_servo3("forward")
+
+        elif command == "move5 B":
+            arm.move_servo3("backward")
 
         elif command == "general":
             print("Enter servo number: ")
@@ -75,7 +78,7 @@ if __name__ == "__main__":
             elif ticks <= 200:
                 arm.general_move(6, 200)
 
-        elif command == "increment":
+        elif command == "slow":
             print("Enter servo number: ")
             servo_number = raw_input()
             print("Enter ticks: ")

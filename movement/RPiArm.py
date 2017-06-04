@@ -15,42 +15,43 @@ class RPiArm:
 
     def move_claw(self, position):
         if position == "open":
-            self.servo1.move_servo(125)
+            self.servo1.gentle_move(125)
         elif position == "close":
-            self.servo1.move_servo(525)
+            self.servo1.gentle_move(525)
 
     def rotate_claw(self, position):
         if position == "left":
-            self.servo2.move_servo(150)
+            self.servo2.gentle_move(150)
         if position == "right":
-            self.servo2.move_servo(600)
+            self.servo2.gentle_move(600)
         if position == "center":
-            self.servo2.move_servo(380)
+            self.servo2.gentle_move(380)
 
     def move_servo3(self, position):
         if position == "forward":
-            self.servo3.move_servo(650)
+            self.servo3.gentle_move(650)
         elif position == "backward":
-            self.servo3.move_servo(150)
+            self.servo3.gentle_move(150)
 
     def move_servo4(self, position):
         if position == "forward":
-            self.servo4.move_servo(600)
+            self.servo4.gentle_move(600)
         elif position == "backward":
-            self.servo4.move_servo(125)
+            self.servo4.gentle_move(125)
 
     def move_servo5(self):
-        self.servo5.move_servo(600)
-        #forward = 150
-        #backward = 600
+        if position == "forward":
+            self.servo5.gentle_move(150)
+        elif position == "backward":
+            self.servo5.gentle_move(600)
 
     def rotate_base(self, position):
         if position == "left":
-            self.servo6.move_servo(600)
+            self.servo6.gentle_move(600)
         elif position == "right":
-            self.servo6.move_servo(200)
+            self.servo6.gentle_move(200)
         elif position == "center":
-            self.servo6.move_servo(390)
+            self.servo6.gentle_move(390)
 
     def general_move(self, servo_num, ticks):
         if servo_num == 1:
@@ -66,14 +67,6 @@ class RPiArm:
         elif servo_num == 6:
             self.servo6.move_servo(ticks)
 
-    def reset_all(self):
-        self.servo1.reset_servo()
-        self.servo2.reset_servo()
-        self.servo3.reset_servo()
-        self.servo4.reset_servo()
-        self.servo5.reset_servo()
-        self.servo6.reset_servo()
-
     def slow_move(self, servo_num, stopPos):
         if servo_num == 1:
             self.servo1.gentle_move(stopPos)
@@ -87,3 +80,11 @@ class RPiArm:
             self.servo5.gentle_move(stopPos)
         elif servo_num == 6:
             self.servo6.gentle_move(stopPos)
+
+    def reset_all(self):
+        self.servo1.reset_servo()
+        self.servo2.reset_servo()
+        self.servo3.reset_servo()
+        self.servo4.reset_servo()
+        self.servo5.reset_servo()
+        self.servo6.reset_servo()
