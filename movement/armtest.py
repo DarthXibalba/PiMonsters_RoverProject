@@ -76,7 +76,7 @@ if __name__ == "__main__":
                 arm.general_move(6, 200)
 
         elif command == "increment":
-            arm.servo5.gentle_move(600)
+            arm.servo5.gentle_move(150)
 
 
 
