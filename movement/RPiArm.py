@@ -24,6 +24,8 @@ class RPiArm:
             self.servo2.move_servo(150)
         if position == "right":
             self.servo2.move_servo(600)
+        if position == "center":
+            self.servo2.move_servo(400)
 
     def rotate_base(self, position):
         if position == "left":
