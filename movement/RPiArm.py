@@ -104,7 +104,6 @@ class RPiArm:
             print self.servo6.get_position()
 
     def stand_up(self):
-        self.servo5.gentle_move(350)
-        self.servo4.gentle_move(350)
         self.servo3.gentle_move(300)
-        self.servo2.gentle_move(380)
+        self.servo5.gentle_move(340)
+        self.servo4.gentle_move(375)
