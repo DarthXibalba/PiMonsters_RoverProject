@@ -88,6 +88,11 @@ if __name__ == "__main__":
         elif command == "reset":
             arm.reset_all()
 
+        elif command == "print":
+            print("Enter servo number: ")
+            servo_number = raw_input()
+            arm.print_ticks(servo_number)
+
         # elif command == "move1":
         #     ticks = ticks + servo_move
         #     servo2.move_servo(ticks)

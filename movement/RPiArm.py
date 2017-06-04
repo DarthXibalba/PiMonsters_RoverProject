@@ -6,12 +6,12 @@ import RPiServo
 
 class RPiArm:
     def __init__(self):
-        self.servo1 = RPiServo.RPiServo(0, 125, 525, 525, 0.05)
-        self.servo2 = RPiServo.RPiServo(1, 150, 600, 380, 0.05)
-        self.servo3 = RPiServo.RPiServo(4, 150, 650, 600, 0.05)
-        self.servo4 = RPiServo.RPiServo(5, 125, 600, 600, 0.3)
-        self.servo5 = RPiServo.RPiServo(8, 150, 600, 600, 0.3)
-        self.servo6 = RPiServo.RPiServo(9, 200, 600, 390, 0.05)
+        self.servo1 = RPiServo.RPiServo(0, 125, 525, 525, 0.025)
+        self.servo2 = RPiServo.RPiServo(1, 150, 600, 380, 0.025)
+        self.servo3 = RPiServo.RPiServo(4, 150, 650, 600, 0.025)
+        self.servo4 = RPiServo.RPiServo(5, 125, 600, 600, 0.15)
+        self.servo5 = RPiServo.RPiServo(8, 150, 600, 600, 0.15)
+        self.servo6 = RPiServo.RPiServo(9, 200, 600, 390, 0.025)
 
     def move_claw(self, position):
         if position == "open":
@@ -88,3 +88,17 @@ class RPiArm:
         self.servo4.reset_servo()
         self.servo5.reset_servo()
         self.servo6.reset_servo()
+
+    def print_ticks(self, servo_num):
+        if servo_num == 1:
+            print self.servo1.get_position()
+        elif servo_num == 2:
+            print self.servo2.get_position()
+        elif servo_num == 3:
+            print self.servo3.get_position()
+        elif servo_num == 4:
+            print self.servo4.get_position()
+        elif servo_num == 5:
+            print self.servo5.get_position()
+        elif servo_num == 6:
+            print self.servo6.get_position()
