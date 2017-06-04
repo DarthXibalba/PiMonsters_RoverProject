@@ -3,7 +3,7 @@ import time
 import Adafruit_PCA9685
 
 servo_increment = 10
-servo_wait = 0.25
+servo_wait = 0.1
 
 class RPiServo:
     def __init__(self, channel, minTicks, maxTicks, resetTicks):
