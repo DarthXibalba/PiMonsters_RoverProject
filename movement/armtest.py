@@ -38,6 +38,9 @@ if __name__ == "__main__":
         elif command == "rotate base C":
             arm.rotate_base("center")
 
+        elif command == "move3":
+            arm.move_servo3()
+
         # elif command == "move1":
         #     ticks = ticks + servo_move
         #     servo2.move_servo(ticks)
