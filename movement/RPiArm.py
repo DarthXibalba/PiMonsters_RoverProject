@@ -8,7 +8,7 @@ class RPiArm:
     def __init__(self):
         self.servo1 = RPiServo.RPiServo(0, 125, 525, 300, 0.05)
         self.servo2 = RPiServo.RPiServo(1, 150, 600, 380, 0.05)
-        self.servo3 = RPiServo.RPiServo(4, 150, 600, 390, 0.05)
+        self.servo3 = RPiServo.RPiServo(4, 150, 700, 390, 0.05)
         self.servo4 = RPiServo.RPiServo(5, 125, 600, 300, 0.3)
         self.servo5 = RPiServo.RPiServo(8, 150, 600, 300, 0.3)
         self.servo6 = RPiServo.RPiServo(9, 200, 600, 300, 0.05)
@@ -69,6 +69,9 @@ class RPiArm:
     def reset_all(self):
         self.servo2.move_servo(380)
         self.servo6.move_servo(390)
+
+# 5 = all the way backward
+# 4 = all the way forward
 
     def slow_move(self, servo_num, stopPos):
         if servo_num == 1:
