@@ -28,7 +28,7 @@ class RPiServo:
         self.pwm.set_pwm(self.channel, self.on, self.off)
 
     def reset_servo(self):
-        move_servo(self.resetTicks)
+        self.move_servo(self.resetTicks)
 
     def get_position(self):
         return self.off
