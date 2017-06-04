@@ -26,6 +26,9 @@ if __name__ == "__main__":
         elif command == "rotate claw R":
             arm.rotate_claw("right")
 
+        elif command == "rotate claw C":
+            arm.rotate_claw("center")
+
         elif command == "rotate base L":
             arm.rotate_base("left")
 
