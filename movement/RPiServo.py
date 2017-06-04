@@ -6,11 +6,12 @@ servo_increment = 10
 servo_wait = 0.1
 
 class RPiServo:
-    def __init__(self, channel, minTicks, maxTicks, resetTicks):
+    def __init__(self, channel, minTicks, maxTicks, resetTicks, waitTime):
         self.channel = channel
         self.minTicks = minTicks
         self.maxTicks = maxTicks
         self.resetTicks = resetTicks
+        self.waitTime = waitTime
         self.on = 0
         self.off = self.resetTicks
 
@@ -42,9 +43,9 @@ class RPiServo:
             while(self.off > newPos):
                 self.off -= servo_increment
                 self.pwm.set_pwm(self.channel, self.on, self.off)
-                time.sleep(servo_wait)
+                time.sleep(self.waitTime)
         elif newPos > self.off:
             while(self.off < newPos):
                 self.off += servo_increment
                 self.pwm.set_pwm(self.channel, self.on, self.off)
-                time.sleep(servo_wait)
+                time.sleep(self.waitTime)
