@@ -40,7 +40,7 @@ class RPiArm:
             self.servo4.move_servo(125)
 
     def move_servo5(self):
-        self.servo5.move_servo(150)
+        self.servo5.move_servo(600)
 
     def rotate_base(self, position):
         if position == "left":
@@ -49,3 +49,17 @@ class RPiArm:
             self.servo6.move_servo(200)
         elif position == "center":
             self.servo6.move_servo(390)
+
+    def general_move(self, servo_num, ticks):
+        if servo_num == 1:
+            self.servo1.move_servo(ticks)
+        if servo_num == 2:
+            self.servo2.move_servo(ticks)
+        if servo_num == 3:
+            self.servo3.move_servo(ticks)
+        if servo_num == 4:
+            self.servo4.move_servo(ticks)
+        if servo_num == 5:
+            self.servo5.move_servo(ticks)
+        if servo_num == 6:
+            self.servo6.move_servo(ticks)

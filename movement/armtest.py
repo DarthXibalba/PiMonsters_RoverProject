@@ -53,6 +53,13 @@ if __name__ == "__main__":
         elif command == "move5":
             arm.move_servo5()
 
+        elif command == "general":
+            print("Enter servo number: ")
+            servo_number = raw_input()
+            print("Enter ticks: ")
+            tick_number = raw_input()
+            arm.general_move(servo_number, tick_number)
+
         # elif command == "move1":
         #     ticks = ticks + servo_move
         #     servo2.move_servo(ticks)
