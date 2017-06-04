@@ -19,26 +19,16 @@ class RPiArm:
         elif position == "close":
             self.servo1.move_servo(525)
 
-    # def open_claw(self):
-    #     self.servo1.move_servo(125)
-    #     # off = 125
-
-    # def close_claw(self):
-    #     self.servo1.move_servo(525)
-    #     # off = 425
-
-    def rotate_claw(self):
-        self.servo2.move_servo(150)
+    def rotate_claw(self, position):
+        if position == "left":
+            self.servo2.move_servo(150)
+        if position == "right":
+            self.servo2.move_servo(600)
 
     def rotate_base(self, position):
-        # 0 degrees = 150
-        # 180 degrees = 600
-
         if position == "left":
             self.servo6.move_servo(600)
-
         elif position == "right":
             self.servo6.move_servo(200)
-
         elif position == "center":
             self.servo6.move_servo(390)

@@ -20,8 +20,11 @@ if __name__ == "__main__":
         elif command == "close":
             arm.move_claw("close")
 
-        elif command == "rotate claw":
-            arm.rotate_claw()
+        elif command == "rotate claw L":
+            arm.rotate_claw("left")
+
+        elif command == "rotate claw R":
+            arm.rotate_claw("right")
 
         elif command == "rotate base L":
             arm.rotate_base("left")
