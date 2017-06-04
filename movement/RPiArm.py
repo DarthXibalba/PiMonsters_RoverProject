@@ -41,4 +41,4 @@ class RPiArm:
             self.servo6.move_servo(200)
 
         elif position == "center":
-            self.servo6.move_servo(400)
+            self.servo6.move_servo(390)
