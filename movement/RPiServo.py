@@ -27,9 +27,6 @@ class RPiServo:
             self.off = off
         self.pwm.set_pwm(self.channel, self.on, self.off)
 
-    def reset_servo(self):
-        self.move_servo(self.resetTicks)
-
     def get_position(self):
         return self.off
 
@@ -49,3 +46,6 @@ class RPiServo:
                 self.off += servo_increment
                 self.pwm.set_pwm(self.channel, self.on, self.off)
                 time.sleep(self.waitTime)
+
+    def reset_servo(self):
+        self.gentle_move(self.resetTicks)
