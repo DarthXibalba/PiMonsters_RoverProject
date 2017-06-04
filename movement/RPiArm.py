@@ -102,3 +102,9 @@ class RPiArm:
             print self.servo5.get_position()
         elif servo_num == 6:
             print self.servo6.get_position()
+
+    def stand_up(self):
+        self.servo2.gentle_move(380)
+        self.servo3.gentle_move(300)
+        self.servo4.gentle_move(350)
+        self.servo5.gentle_move(350)

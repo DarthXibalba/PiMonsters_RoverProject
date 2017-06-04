@@ -88,6 +88,9 @@ if __name__ == "__main__":
         elif command == "reset":
             arm.reset_all()
 
+        elif command == "stand":
+            arm.stand_up()
+
         elif command == "print":
             print("Enter servo number: ")
             servo_number = raw_input()
