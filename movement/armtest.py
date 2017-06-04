@@ -44,6 +44,9 @@ if __name__ == "__main__":
         elif command == "move3 F":
             arm.move_servo3("forward")
 
+        elif command == "move4":
+            arm.move_servo4()
+
         # elif command == "move1":
         #     ticks = ticks + servo_move
         #     servo2.move_servo(ticks)
