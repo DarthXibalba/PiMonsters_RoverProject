@@ -91,22 +91,26 @@ class RPiArm:
 
     def stand_up(self):
         self.servo3.gentle_move(300)
-        self.servo5.gentle_move(340)
+        self.servo5.gentle_move(350)
         self.servo4.gentle_move(375)
 
     def pick_up(self):
-        return
+        self.servo3.gentle_move(400)
+        self.move_claw("open")
+        self.servo4.gentle_move(550)
+        self.servo5.gentle_move(300)
+        self.move_claw("close")
 
     def drop_can(self, direction):
-        return
-        # if direction == "left":
-        #     self.rotate_base("left")
-        #
-        # elif direction == "right":
-        #     self.rotate_base("right")
-        #
-        # elif direction == "center":
-        #     self.rotate_base("center")
+        if direction == "left":
+            self.rotate_base("left")
+            self.servo4.gentle_move(550)
+        elif direction == "right":
+            self.rotate_base("right")
+            self.servo4.gentle_move(550)
+        elif direction == "center":
+            self.rotate_base("center")
+            self.servo4.gentle_move(225)
 
     def print_ticks(self, servo_num):
         if servo_num == 1:

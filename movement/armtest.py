@@ -87,15 +87,18 @@ if __name__ == "__main__":
         elif command == "stand":
             arm.stand_up()
 
-        # elif command == "drop":
-        #     print("Enter direction: ")
-        #     drop_dir = raw_input()
-        #     if drop_dir == "l":
-        #         arm.drop_can("left")
-        #     elif drop_dir == "r":
-        #         arm.drop_can("right")
-        #     elif drop_dir == "c":
-        #         arm.drop_can("center")
+        elif command == "pick":
+            arm.pick_up()
+
+        elif command == "drop":
+            print("Enter direction: ")
+            drop_dir = raw_input()
+            if drop_dir == "l":
+                arm.drop_can("left")
+            elif drop_dir == "r":
+                arm.drop_can("right")
+            elif drop_dir == "c":
+                arm.drop_can("center")
 
         elif command == "print":
             print("Enter servo number: ")
