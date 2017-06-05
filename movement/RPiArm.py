@@ -89,6 +89,25 @@ class RPiArm:
         self.servo2.reset_servo()
         self.servo1.reset_servo()
 
+    def stand_up(self):
+        self.servo3.gentle_move(300)
+        self.servo5.gentle_move(340)
+        self.servo4.gentle_move(375)
+
+    def pick_up(self):
+        return
+
+    def drop_can(self, direction):
+        return
+        # if direction == "left":
+        #     self.rotate_base("left")
+        #
+        # elif direction == "right":
+        #     self.rotate_base("right")
+        #
+        # elif direction == "center":
+        #     self.rotate_base("center")
+
     def print_ticks(self, servo_num):
         if servo_num == 1:
             print self.servo1.get_position()
@@ -102,8 +121,3 @@ class RPiArm:
             print self.servo5.get_position()
         elif servo_num == 6:
             print self.servo6.get_position()
-
-    def stand_up(self):
-        self.servo3.gentle_move(300)
-        self.servo5.gentle_move(340)
-        self.servo4.gentle_move(375)
