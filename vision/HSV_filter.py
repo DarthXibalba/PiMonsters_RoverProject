@@ -131,7 +131,8 @@ if __name__ == '__main__':
     cv2.createTrackbar(VL, WND_TRACK, 0, 255, do_nothing)
     cv2.createTrackbar(VH, WND_TRACK, 255, 255, do_nothing)
     
-    calib_dict = calibrate_class(CALIBRATION_SET_PATH)
+    rtn = preview_image(TEST_IMAGE_PATH)
+    #calib_dict = calibrate_class(CALIBRATION_SET_PATH)
             
     cv2.destroyAllWindows()
    
