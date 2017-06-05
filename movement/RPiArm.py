@@ -105,12 +105,15 @@ class RPiArm:
         if direction == "left":
             self.rotate_base("left")
             self.servo4.gentle_move(550)
+            self.move_claw("open")
         elif direction == "right":
             self.rotate_base("right")
             self.servo4.gentle_move(550)
+            self.move_claw("open")
         elif direction == "center":
             self.rotate_base("center")
             self.servo4.gentle_move(225)
+            self.move_claw("open")
 
     def print_ticks(self, servo_num):
         if servo_num == 1:
