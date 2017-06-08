@@ -21,4 +21,5 @@ from . import api
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^api/v1/control', api.control),
+    url(r'^test', api.test),
 ]
