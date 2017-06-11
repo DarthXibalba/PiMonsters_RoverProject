@@ -5,12 +5,26 @@ from . import RPiArm
 
 import requests
 
+
+#### 
+#
+# NEED THIS TO SEND POST CALL
+
+
 client = requests.session()
 URL = "http://pi-monsters-dashboard.herokuapp.com/update-event"
 
 # Retrieve the CSRF token first
 client.get(URL)  # sets cookie
 csrftoken = client.cookies['csrf']
+
+
+payload = {'event_id': '1', 'container': 'coke_cans', 'csrfmiddlewaretoken': csrftoken}
+r = requests.post(URL, data=payload)
+
+
+
+#######################
 
 def control(command):
 

@@ -1,7 +1,7 @@
 from __future__ import division
 import time
 import Adafruit_PCA9685
-from . import RPiServo
+import RPiServo
 
 
 class RPiArm:
@@ -9,9 +9,11 @@ class RPiArm:
         self.servo1 = RPiServo.RPiServo(0, 125, 525, 525, 0.025)
         self.servo2 = RPiServo.RPiServo(1, 150, 600, 380, 0.025)
         self.servo3 = RPiServo.RPiServo(4, 150, 650, 600, 0.025)
-        self.servo4 = RPiServo.RPiServo(5, 125, 600, 600, 0.15)
-        self.servo5 = RPiServo.RPiServo(8, 150, 600, 600, 0.15)
-        self.servo6 = RPiServo.RPiServo(9, 200, 600, 390, 0.025)
+        # self.servo4 = RPiServo.RPiServo(5, 125, 600, 600, 0.15)
+        self.servo4 = RPiServo.RPiServo(5, 100, 700, 600, 0.15)
+        self.servo5 = RPiServo.RPiServo(8, 150, 600, 510, 0.15)
+        # self.servo6 = RPiServo.RPiServo(9, 200, 600, 390, 0.025)
+        self.servo6 = RPiServo.RPiServo(9, 100, 700, 390, 0.025)
 
     def move_claw(self, position):
         if position == "open":
@@ -98,33 +100,36 @@ class RPiArm:
         self.servo3.gentle_move(400)
         self.move_claw("open")
         self.servo4.gentle_move(550)
-        self.servo5.gentle_move(300)
+        self.servo5.gentle_move(220)
         self.move_claw("close")
 
     def drop_can(self, direction):
         if direction == "left":
+            self.rotate_claw("center")
             self.rotate_base("left")
             self.servo4.gentle_move(550)
             self.move_claw("open")
         elif direction == "right":
+            self.rotate_claw("center")
             self.rotate_base("right")
             self.servo4.gentle_move(550)
             self.move_claw("open")
         elif direction == "center":
+            self.rotate_claw("center")
             self.rotate_base("center")
             self.servo4.gentle_move(225)
             self.move_claw("open")
 
     def print_ticks(self, servo_num):
         if servo_num == 1:
-            print(self.servo1.get_position())
+            print self.servo1.get_position()
         elif servo_num == 2:
-            print(self.servo2.get_position())
+            print self.servo2.get_position()
         elif servo_num == 3:
-            print(self.servo3.get_position())
+            print self.servo3.get_position()
         elif servo_num == 4:
-            print(self.servo4.get_position())
+            print self.servo4.get_position()
         elif servo_num == 5:
-            print(self.servo5.get_position())
+            print self.servo5.get_position()
         elif servo_num == 6:
-            print(self.servo6.get_position())
+            print self.servo6.get_position()
