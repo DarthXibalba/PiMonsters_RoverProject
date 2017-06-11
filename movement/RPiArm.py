@@ -98,19 +98,22 @@ class RPiArm:
         self.servo3.gentle_move(400)
         self.move_claw("open")
         self.servo4.gentle_move(550)
-        self.servo5.gentle_move(300)
+        self.servo5.gentle_move(220)
         self.move_claw("close")
 
     def drop_can(self, direction):
         if direction == "left":
+            self.rotate_claw("center")
             self.rotate_base("left")
             self.servo4.gentle_move(550)
             self.move_claw("open")
         elif direction == "right":
+            self.rotate_claw("center")
             self.rotate_base("right")
             self.servo4.gentle_move(550)
             self.move_claw("open")
         elif direction == "center":
+            self.rotate_claw("center")
             self.rotate_base("center")
             self.servo4.gentle_move(225)
             self.move_claw("open")
