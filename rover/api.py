@@ -1,9 +1,9 @@
 
 from django.http import JsonResponse
-from . import arm_controller
+from . import armtest2
 
 def control(request):
-	arm_controller.control()
+	status = armtest2.control()
 	return JsonResponse({"success": status})
 
 
