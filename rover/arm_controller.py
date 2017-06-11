@@ -6,7 +6,7 @@ from . import RPiArm
 import requests
 
 client = requests.session()
-URL = "http://pi-monsters.dashboard.herokuapp.com/update-event"
+URL = "http://pi-monsters-dashboard.herokuapp.com/update-event"
 
 # Retrieve the CSRF token first
 client.get(URL)  # sets cookie
