@@ -1,7 +1,7 @@
 from __future__ import division
 import time
 import Adafruit_PCA9685
-import RPiArm
+from . import RPiArm
 
 def move_arm():
 	command = "move claw"
@@ -11,5 +11,3 @@ def move_arm():
 	# arm.drop_can("center")
 
 	return True
-
-        
