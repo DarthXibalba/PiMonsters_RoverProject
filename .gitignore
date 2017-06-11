@@ -2,3 +2,5 @@
 *.pyc
 
 roverenv
+.DS_Store
+

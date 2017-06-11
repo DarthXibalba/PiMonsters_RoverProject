@@ -3,6 +3,14 @@ import time
 import Adafruit_PCA9685
 from . import RPiArm
 
+import requests
+
+client = requests.session()
+URL = "http://pi-monsters.dashboard.herokuapp.com/update-event"
+
+# Retrieve the CSRF token first
+client.get(URL)  # sets cookie
+csrftoken = client.cookies['csrf']
 
 def control(command):
 
@@ -36,59 +44,64 @@ def control(command):
     elif command == "move3 B":
         arm.move_servo3("backward")
 
-    # elif command == "move 4":
-    #     print("Enter direction: ")
-    #     move_dir = raw_input()
-    #     if move_dir == "f":
-    #         arm.move_servo4("forward")
-    #     elif move_dir == "b":
-    #         arm.move_servo4("backward")
+    elif command == "move 4":
+        print("Enter direction: ")
+        move_dir = raw_input()
+        if move_dir == "f":
+            arm.move_servo4("forward")
+        elif move_dir == "b":
+            arm.move_servo4("backward")
 
-    # elif command == "move 5":
-    #     print("Enter direction: ")
-    #     move_dir = raw_input()
-    #     if move_dir == "f":
-    #         arm.move_servo5("forward")
-    #     elif move_dir == "b":
-    #         arm.move_servo5("backward")
+    elif command == "move 5":
+        print("Enter direction: ")
+        move_dir = raw_input()
+        if move_dir == "f":
+            arm.move_servo5("forward")
+        elif move_dir == "b":
+            arm.move_servo5("backward")
 
-    # elif command == "general":
-    #     print("Enter servo number: ")
-    #     servo_number = raw_input()
-    #     print("Enter ticks: ")
-    #     tick_number = raw_input()
-    #     arm.general_move(int(servo_number), int(tick_number))
+    elif command == "general":
+        print("Enter servo number: ")
+        servo_number = raw_input()
+        print("Enter ticks: ")
+        tick_number = raw_input()
+        arm.general_move(int(servo_number), int(tick_number))
 
-    # elif command == "slow":
-    #     print("Enter servo number: ")
-    #     servo_number = raw_input()
-    #     print("Enter ticks: ")
-    #     tick_number = raw_input()
-    #     arm.slow_move(int(servo_number), int(tick_number))
+    elif command == "slow":
+        print("Enter servo number: ")
+        servo_number = raw_input()
+        print("Enter ticks: ")
+        tick_number = raw_input()
+        arm.slow_move(int(servo_number), int(tick_number))
 
-    # elif command == "reset":
-    #     arm.reset_all()
+    elif command == "reset":
+        arm.reset_all()
 
-    # elif command == "stand":
-    #     arm.stand_up()
+    elif command == "stand":
+        arm.stand_up()
 
-    # elif command == "pick":
-    #     arm.pick_up()
+    elif command == "pick":
+        arm.pick_up()
 
-    # elif command == "drop":
-    #     print("Enter direction: ")
-    #     drop_dir = raw_input()
-    #     if drop_dir == "l":
-    #         arm.drop_can("left")
-    #     elif drop_dir == "r":
-    #         arm.drop_can("right")
-    #     elif drop_dir == "c":
-    #         arm.drop_can("center")
 
-    # elif command == "print":
-    #     print("Enter servo number: ")
-    #     servo_number = raw_input()
-    #     arm.print_ticks(int(servo_number))
+    elif command == "drop left":
+        arm.drop_can("left")
+        payload = {'event_id': '1', 'container': 'coke_cans', 'csrfmiddlewaretoken': csrftoken}
+        r = requests.post(URL, data=payload)
+    elif drop_dir == "drop right":
+        arm.drop_can("right")
+        payload = {'event_id': '1', 'container': 'sprite_cans', 'csrfmiddlewaretoken': csrftoken}
+        r = requests.post(URL, data=payload)
+    elif drop_dir == "drop center":
+        payload = {'event_id': '1', 'container': 'pepsi_cans', 'csrfmiddlewaretoken': csrftoken}
+        r = requests.post(URL, data=payload)
+        arm.drop_can("center")
+
+
+    elif command == "print":
+        print("Enter servo number: ")
+        servo_number = raw_input()
+        arm.print_ticks(int(servo_number))
 
     else:
         print("Invalid command!")
