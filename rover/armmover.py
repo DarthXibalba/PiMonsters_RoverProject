@@ -6,8 +6,8 @@ from . import RPiArm
 def move_arm():
 	command = "move claw"
 	arm = RPiArm.RPiArm()
-    arm.reset_all()
-    arm.move_claw("open")
+	arm.reset_all()
+	arm.move_claw("open")
 	# arm.drop_can("center")
 
 	return True
