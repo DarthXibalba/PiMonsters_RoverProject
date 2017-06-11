@@ -10,8 +10,8 @@ class RPiArm:
         self.servo2 = RPiServo.RPiServo(1, 150, 600, 380, 0.025)
         self.servo3 = RPiServo.RPiServo(4, 150, 650, 600, 0.025)
         # self.servo4 = RPiServo.RPiServo(5, 125, 600, 600, 0.15)
-        self.servo4 = RPiServo.RPiServo(5, 100, 700, 600, 0.15)
-        self.servo5 = RPiServo.RPiServo(8, 150, 600, 510, 0.15)
+        self.servo4 = RPiServo.RPiServo(5, 100, 700, 600, 0.1)
+        self.servo5 = RPiServo.RPiServo(8, 150, 600, 510, 0.1)
         # self.servo6 = RPiServo.RPiServo(9, 200, 600, 390, 0.025)
         self.servo6 = RPiServo.RPiServo(9, 100, 700, 390, 0.025)
 
@@ -92,12 +92,12 @@ class RPiArm:
         self.servo1.reset_servo()
 
     def search(self):
-        self.servo6.reset_servo()
+        self.servo6.gentle_move(390)
         self.servo5.gentle_move(490)
-        self.servo4.reset_servo()
+        self.servo4.gentle_move(600)
         self.servo3.gentle_move(625)
-        self.servo2.reset_servo()
-        self.servo1.reset_servo()
+        self.servo2.gentle_move(380)
+        self.servo1.gentle_move(525)
 
     def stand_up(self):
         self.servo3.gentle_move(300)
