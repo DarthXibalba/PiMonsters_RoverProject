@@ -4,6 +4,8 @@ import Adafruit_PCA9685
 import RPiArm
 
 def move_arm(command):
+    continueMoving = True
+    
     if command == "move claw":
         print("Enter position: ")
         claw_pos = raw_input()
@@ -129,9 +131,14 @@ def move_arm(command):
     #
     # elif command == "reset":
     #     servo2.move_servo(servo_reset)
-
+    
+    elif command == "quit":
+        continueMoving = False
+    
     else:
         print("Invalid command!")
+        
+    return continueMoving
         
 
 if __name__ == "__main__":
@@ -140,9 +147,9 @@ if __name__ == "__main__":
 
     # ticks = arm.servo6.get_position()
     # servo_move = 15
-
-    while(1):
+    continueMoving = True
+    while(continueMoving):
         print("\n")
         print("Enter command: ")
         command = raw_input()
-        move_arm(command)
+        continueMoving = move_arm(command)
