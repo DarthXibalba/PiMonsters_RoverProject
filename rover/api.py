@@ -1,6 +1,6 @@
 
 from django.http import JsonResponse
-from . import armtest2, armmover
+from . import armtest2, simple_arm
 
 def control(request):
 	status = armtest2.control()
@@ -10,7 +10,7 @@ def control(request):
 # claw releases item into bin, when released send data to dashboard 
 
 def armmover(request):
-	status = armmover.move_arm()
+	status = simple_arm.move_arm()
 	return JsonResponse({"success": status})
 
 def test(request):
