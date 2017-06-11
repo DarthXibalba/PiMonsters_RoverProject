@@ -91,6 +91,14 @@ class RPiArm:
         self.servo2.reset_servo()
         self.servo1.reset_servo()
 
+    def search(self):
+        self.servo6.reset_servo()
+        self.servo5.gentle_move(490)
+        self.servo4.reset_servo()
+        self.servo3.gentle_move(625)
+        self.servo2.reset_servo()
+        self.servo1.reset_servo()
+
     def stand_up(self):
         self.servo3.gentle_move(300)
         self.servo5.gentle_move(350)

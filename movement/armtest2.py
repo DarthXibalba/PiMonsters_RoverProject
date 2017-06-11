@@ -84,6 +84,9 @@ if __name__ == "__main__":
         elif command == "reset":
             arm.reset_all()
 
+        elif command == "search":
+            arm.search()
+
         elif command == "stand":
             arm.stand_up()
 
