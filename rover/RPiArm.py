@@ -1,7 +1,7 @@
 from __future__ import division
 import time
 import Adafruit_PCA9685
-import RPiServo
+from . import RPiServo
 
 
 class RPiArm:
