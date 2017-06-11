@@ -122,14 +122,14 @@ class RPiArm:
 
     def print_ticks(self, servo_num):
         if servo_num == 1:
-            print self.servo1.get_position()
+            print(self.servo1.get_position())
         elif servo_num == 2:
-            print self.servo2.get_position()
+            print(self.servo2.get_position())
         elif servo_num == 3:
-            print self.servo3.get_position()
+            print(self.servo3.get_position())
         elif servo_num == 4:
-            print self.servo4.get_position()
+            print(self.servo4.get_position())
         elif servo_num == 5:
-            print self.servo5.get_position()
+            print(self.servo5.get_position())
         elif servo_num == 6:
-            print self.servo6.get_position()
+            print(self.servo6.get_position())
