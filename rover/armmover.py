@@ -7,6 +7,4 @@ def move_arm():
 	arm = RPiArm.RPiArm()
 	# arm.reset_all()
 	arm.move_claw("open")
-	# arm.drop_can("center")
-
 	return True
