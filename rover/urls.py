@@ -22,5 +22,5 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^control', api.control),
     url(r'^test', api.test),
-    url(r'^armmover', api.armmover)
+    url(r'^simple', api.simple_arm_test)
 ]

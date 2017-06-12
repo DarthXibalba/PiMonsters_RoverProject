@@ -1,1 +1,1 @@
-web: gunicorn rover.wsgi --log-file=-
+web: gunicorn rover.wsgi --bind 0.0.0.0:80 --log-file=-
