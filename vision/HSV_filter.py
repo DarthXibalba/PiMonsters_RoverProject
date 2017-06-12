@@ -7,7 +7,12 @@ Python 2.7.13
 
 import numpy as np
 import os, sys
+from time import sleep
 import cv2
+
+from picamera.array import PiRGBArray
+from picamera import PiCamera
+
 
 
 TEST_IMAGE_PATH = "../tf_classifier/ImageDataset/Capture/Pepsi/capture_pepsi_can_2.jpg"
@@ -29,6 +34,7 @@ VL = 'Value Low'
 VH = 'Value High'
 WND_TRACK= 'Colorbars'
 WND_FRAME= 'Image Feed'
+WND_LIVE = 'Live Feed'
 
 
 
@@ -36,7 +42,39 @@ def do_nothing():
     pass
 
 def preview_liveFeed():
-    pass
+    camera = PiCamera()
+    camera.resolution = (640,480)
+    camera.framerate = 32
+    
+    rawCapture = PiRGBArray(camera, size=(640,480))
+    sleep(1.0)
+    
+    for cam_frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True):
+        frame = cam_frame.array
+        height, width = frame.shape[:2]
+        #frame = cv2.resize(frame, (width/2, height/2), interpolation=cv2.INTER_CUBIC)
+        
+        frame = cv2.GaussianBlur(frame, (5,5), 0)
+        frame_hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+        cv2.imshow(WND_LIVE, frame)
+        
+        # Get trackbar positions
+        hl = cv2.getTrackbarPos(HL, WND_TRACK)
+        hh = cv2.getTrackbarPos(HH, WND_TRACK)
+        sl = cv2.getTrackbarPos(SL, WND_TRACK)
+        sh = cv2.getTrackbarPos(SH, WND_TRACK)
+        vl = cv2.getTrackbarPos(VL, WND_TRACK)
+        vh = cv2.getTrackbarPos(VH, WND_TRACK)
+        
+        # Get HSV range and mask
+        hsv_low = np.array([hl, sl, vl])
+        hsv_high = np.array([hh, sh, vh])
+        hsv_mask = cv2.inRange(frame_hsv, hsv_low, hsv_high)
+        
+        # Display results
+        frame_filtered = cv2.bitwise_and(frame, frame, mask=hsv_mask)
+        cv2.imshow(WND_FRAME, frame_filtered)
+        
 
 
 def preview_image(image_path): 
@@ -131,9 +169,10 @@ if __name__ == '__main__':
     cv2.createTrackbar(VL, WND_TRACK, 0, 255, do_nothing)
     cv2.createTrackbar(VH, WND_TRACK, 255, 255, do_nothing)
     
-    rtn = preview_image(TEST_IMAGE_PATH)
+    #rtn = preview_image(TEST_IMAGE_PATH)
     #calib_dict = calibrate_class(CALIBRATION_SET_PATH)
-            
+    preview_liveFeed()    
+        
     cv2.destroyAllWindows()
    
         
