@@ -7,6 +7,7 @@ Python 2.7.13
 
 import numpy as np
 import os, sys
+import io
 from time import sleep
 import cv2
 
@@ -20,10 +21,22 @@ CALIBRATION_SET_PATH = "../tf_classifier/ImageDataset/Calibration/"
 
 '''
 [[hsv_low], [hsv_high]]
-Coke:  [119, 101, 134], [113, 218, 209]
-Pepsi: [73, 40, 56], [123, 201, 201]
-Sprite:[51, 62, 53], [101, 195, 168] 
+<----- GARAGE CALIBRATION ----->
+Coke:  [140, 130, 60], [179, 255, 255]
+Pepsi: [85, 187, 68], [142, 255, 255]
+Sprite:[67, 150, 14], [102, 255, 192]
+
+<----- BOOKER CONF CALIBRATION ----->
+Coke:  [140, 130, 60], [179, 255, 255]
+Pepsi: [85, 187, 68], [142, 255, 255]
+Sprite:[67, 150, 14], [102, 255, 192]
 '''
+HSV = {
+'coke':  { 'lower':np.array([140, 130, 60]), 'upper':np.array([179, 255, 255]) },
+'pepsi': { 'lower':np.array([85, 187, 68]), 'upper':np.array([142, 255, 255]) },
+'sprite':{ 'lower':np.array([67, 150, 14]), 'upper':np.array([102, 255, 192]) },
+'none':  { 'lower':np.array([0, 0, 0]),     'upper':np.array([179, 255, 255]) },
+}
 
 # Set global variables for windows and trackbars
 HL = 'Hue Low'
@@ -36,20 +49,28 @@ WND_TRACK= 'Colorbars'
 WND_FRAME= 'Image Feed'
 WND_LIVE = 'Live Feed'
 
-
+WIDTH = 840
+HEIGHT = 600
+FRAMERATE = 24
 
 def do_nothing():
     pass
 
-def preview_liveFeed():
+
+def preview_calibration():
     camera = PiCamera()
-    camera.resolution = (640,480)
-    camera.framerate = 32
+    camera.resolution = (WIDTH,HEIGHT)
+    camera.framerate = FRAMERATE
     
-    rawCapture = PiRGBArray(camera, size=(640,480))
-    sleep(1.0)
+    rawCapture = PiRGBArray(camera, size=(WIDTH,HEIGHT))
+    sleep(0.5)
+
+    obj_class = 'none'
     
     for cam_frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True):
+        rawCapture.truncate()
+        rawCapture.seek(0)
+        
         frame = cam_frame.array
         height, width = frame.shape[:2]
         #frame = cv2.resize(frame, (width/2, height/2), interpolation=cv2.INTER_CUBIC)
@@ -57,6 +78,49 @@ def preview_liveFeed():
         frame = cv2.GaussianBlur(frame, (5,5), 0)
         frame_hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
         cv2.imshow(WND_LIVE, frame)
+        
+        # Get HSV range and mask
+        hsv_low = HSV[obj_class]['lower']
+        hsv_high = HSV[obj_class]['upper']
+        hsv_mask = cv2.inRange(frame_hsv, hsv_low, hsv_high)
+        
+        # Display results
+        frame_filtered = cv2.bitwise_and(frame, frame, mask=hsv_mask)
+        cv2.imshow(WND_FRAME, frame_filtered)
+
+        key = cv2.waitKey(5)
+        if (key == ord('c')):
+            obj_class = 'coke'
+        elif (key == ord('p')):
+            obj_class = 'pepsi'
+        elif (key == ord('s')):
+            obj_class = 'sprite'
+        elif (key == ord('n')):
+            obj_class = 'none'
+        elif (key == ord('q')):
+            break
+
+
+def preview_liveFeed():
+    camera = PiCamera()
+    camera.resolution = (WIDTH,HEIGHT)
+    camera.framerate = FRAMERATE
+    
+    rawCapture = PiRGBArray(camera, size=(WIDTH,HEIGHT))
+    sleep(0.5)
+    
+    for cam_frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True):
+        rawCapture.truncate()
+        rawCapture.seek(0)
+        
+        frame = cam_frame.array
+        height, width = frame.shape[:2]
+        #frame = cv2.resize(frame, (width/2, height/2), interpolation=cv2.INTER_CUBIC)
+        
+        frame = cv2.GaussianBlur(frame, (5,5), 0)
+        frame_hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+        cv2.imshow(WND_LIVE, frame)
+        
         
         # Get trackbar positions
         hl = cv2.getTrackbarPos(HL, WND_TRACK)
@@ -74,6 +138,11 @@ def preview_liveFeed():
         # Display results
         frame_filtered = cv2.bitwise_and(frame, frame, mask=hsv_mask)
         cv2.imshow(WND_FRAME, frame_filtered)
+
+        key = cv2.waitKey(5) 
+        if (key == ord('q')):
+            break
+    
         
 
 
@@ -110,7 +179,7 @@ def preview_image(image_path):
         cv2.imshow(WND_FRAME, frame_filtered)
         
         # Return hsv values or quit-code
-        key = cv2.waitKey(5)
+        key = cv2.waitKey(5) 
         if (key == ord('s')):
             rtn = { 'code':'save', 'hsv_low':hsv_low, 'hsv_high':hsv_high}
             break
@@ -171,7 +240,8 @@ if __name__ == '__main__':
     
     #rtn = preview_image(TEST_IMAGE_PATH)
     #calib_dict = calibrate_class(CALIBRATION_SET_PATH)
-    preview_liveFeed()    
+    #preview_liveFeed()
+    preview_calibration()
         
     cv2.destroyAllWindows()
    
