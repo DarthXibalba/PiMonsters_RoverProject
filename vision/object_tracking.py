@@ -9,11 +9,13 @@ import numpy as np
 import cv2
 
 
+
 TEST_IMAGE_PATH = "../tf_classifier/ImageDataset/Calibration/Pepsi/capture_pepsi_can_2.jpg"
 #TEST_IMAGE_PATH = "../tf_classifier/ImageDataset/Calibration/Pepsi/pepsi_can_6.jpg"
 
 hsv_high = np.array([128, 255, 255])
 hsv_low = np.array([46, 100, 65])
+MIN_AREA = 60*60
 
 COLORS = [(0,0,255), (0,128,255), (0,255,255), (0,255,0), (255,0,0),    # Red, Orange, Yellow, Green, Blue
                   (255,255,0), (255,0,128), (255,0,255), (150,50,255), (0,75,150)] # Cyan, Purple, Magenta, Rose, Brown
@@ -44,25 +46,29 @@ def findROI(image, mask_hsv):
         elif (hierarchy[0][i][2] == -1) and (hierarchy[0][i][3] == -1):
             contourFilter.append(contours[i])
 
-            
-    # Find the object contour (should be the longest contour)
-    obj_contour = sorted(contourFilter, key=len, reverse=True)[0]
-    #cv2.drawContours(image_drawObjCntr, obj_contour, -1, COLORS[3], thickness=3)
+    # Formulate the return dictionary
+    if (len(contourFilter) > 0):
+        # Find the object contour (should be the longest contour)
+        obj_contour = sorted(contourFilter, key=len, reverse=True)[0]
+        #cv2.drawContours(image_drawObjCntr, obj_contour, -1, COLORS[3], thickness=3)
 
-    # Fit rectangles
-    x,y,w,h = cv2.boundingRect(obj_contour)
-    #cv2.rectangle(image_fitShapes, (x,y), (x+w,y+h), COLORS[0], thickness=3)
-    
-    rotatedRect = cv2.minAreaRect(obj_contour)
-    #box = cv2.boxPoints(rotatedRect)
-    #box = np.int0(box)
-    #cv2.drawContours(image_fitShapes, [box], -1, COLORS[1], thickness=3)
+        # Fit rectangles
+        x,y,w,h = cv2.boundingRect(obj_contour)
+        #cv2.rectangle(image_fitShapes, (x,y), (x+w,y+h), COLORS[0], thickness=3)
+        
+        rotatedRect = cv2.minAreaRect(obj_contour)
+        #box = cv2.boxPoints(rotatedRect)
+        #box = np.int0(box)
+        #cv2.drawContours(image_fitShapes, [box], -1, COLORS[1], thickness=3)
 
-    rtn = {
-        'obj_contour': obj_contour,
-        'boundingRect': [x,y,w,h],
-        'rotatedRect': rotatedRect
-    }
+        if (w*h < MIN_AREA):
+            rtn = {}
+        else:
+            rtn = { 'obj_contour': obj_contour, 'boundingRect': [x,y,w,h], 'rotatedRect': rotatedRect }
+        
+    else:
+        rtn = {}
+        
     return rtn
 
 

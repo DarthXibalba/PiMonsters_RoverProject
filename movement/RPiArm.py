@@ -3,21 +3,22 @@ import time
 import Adafruit_PCA9685
 import RPiServo
 
+servo_increment = 5
 
 class RPiArm:
     def __init__(self):
-        self.servo1 = RPiServo.RPiServo(0, 125, 525, 525, 0.025)
-        self.servo2 = RPiServo.RPiServo(1, 150, 600, 380, 0.025)
-        self.servo3 = RPiServo.RPiServo(4, 150, 650, 600, 0.025)
-        self.servo4 = RPiServo.RPiServo(5, 100, 700, 630, 0.1)
-        self.servo5 = RPiServo.RPiServo(8, 150, 600, 550, 0.1)
-        self.servo6 = RPiServo.RPiServo(9, 180, 630, 390, 0.025)
+        self.servo1 = RPiServo.RPiServo(0, 125, 535, 525, 0.01)
+        self.servo2 = RPiServo.RPiServo(1, 150, 600, 380, 0.01)
+        self.servo3 = RPiServo.RPiServo(4, 150, 650, 600, 0.02)
+        self.servo4 = RPiServo.RPiServo(5, 100, 700, 630, 0.08)
+        self.servo5 = RPiServo.RPiServo(8, 150, 600, 550, 0.05)
+        self.servo6 = RPiServo.RPiServo(9, 180, 630, 400, 0.025)
 
     def move_claw(self, position):
         if position == "open":
             self.servo1.gentle_move(125)
         elif position == "close":
-            self.servo1.gentle_move(525)
+            self.servo1.gentle_move(535)
 
     def rotate_claw(self, position):
         if position == "left":
@@ -51,7 +52,14 @@ class RPiArm:
         elif position == "right":
             self.servo6.gentle_move(180)
         elif position == "center":
-            self.servo6.gentle_move(390)
+            self.servo6.gentle_move(400)
+
+    def align_base(self, direction):
+        curPos = self.servo6.get_position()
+        if direction == "left":
+            self.servo6.gentle_move(curPos + servo_increment)
+        elif direction == "right":
+            self.servo6.gentle_move(curPos - servo_increment)
 
     def general_move(self, servo_num, ticks):
         if servo_num == 1:

@@ -7,7 +7,6 @@ Python 2.7.13
 
 import numpy as np
 import os, sys
-import io
 from time import sleep
 import cv2
 
@@ -15,6 +14,8 @@ from picamera.array import PiRGBArray
 from picamera import PiCamera
 
 import object_tracking as objtrack
+
+
 
 COLORS = [(0,0,255), (0,128,255), (0,255,255), (0,255,0), (255,0,0),    # Red, Orange, Yellow, Green, Blue
         (255,255,0), (255,0,128), (255,0,255), (150,50,255), (0,75,150)] # Cyan, Purple, Magenta, Rose, Brown
@@ -39,7 +40,7 @@ HSV = {
 'coke':  { 'lower':np.array([130, 100, 25]), 'upper':np.array([179, 255, 255]) },
 'pepsi': { 'lower':np.array([85, 187, 68]), 'upper':np.array([142, 255, 255]) },
 'sprite':{ 'lower':np.array([67, 150, 14]), 'upper':np.array([102, 255, 192]) },
-'none':  { 'lower':np.array([0, 0, 0]),     'upper':np.array([179, 255, 255]) },
+'none':  { 'lower':np.array([0, 0, 0]),     'upper':np.array([179, 255, 255]) }
 }
 
 # Set global variables for windows and trackbars
@@ -56,6 +57,8 @@ WND_LIVE = 'Live Feed'
 WIDTH = 840
 HEIGHT = 600
 FRAMERATE = 30
+
+
 
 def do_nothing():
     pass
@@ -75,9 +78,7 @@ def preview_calibration():
         rawCapture.truncate()
         rawCapture.seek(0)
         
-        frame = cam_frame.array
-        height, width = frame.shape[:2]
-        
+        frame = cam_frame.array        
         frame = cv2.GaussianBlur(frame, (5,5), 0)
         frame_hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
         
@@ -89,14 +90,18 @@ def preview_calibration():
 
         # Find ROI and draw results onto image
         ROI = objtrack.findROI(frame, hsv_mask)
-        cv2.drawContours(frame_filtered, ROI['obj_contour'], -1, COLORS[3], thickness=3)
+        if (ROI.has_key('obj_contour')):
+            print("Contour length = " + str(len(ROI['obj_contour'])))
+            cv2.drawContours(frame_filtered, ROI['obj_contour'], -1, COLORS[3], thickness=3)
 
-        [x,y,w,h] = ROI['boundingRect']
-        cv2.rectangle(frame_filtered, (x,y), (x+w,y+h), COLORS[0], thickness=3)
+            [x,y,w,h] = ROI['boundingRect']
+            print("x = " +str(x) +"\ny= " +str(y) +"\nw = " +str(w) +"\nh = " + str(h) +"\n") 
+            cv2.rectangle(frame_filtered, (x,y), (x+w,y+h), COLORS[0], thickness=3)
 
-        box = cv2.boxPoints(ROI['rotatedRect'])
-        box = np.int0(box)
-        cv2.drawContours(frame_filtered, [box], -1, COLORS[1], thickness=3)
+            box = cv2.boxPoints(ROI['rotatedRect'])
+            box = np.int0(box)
+            cv2.drawContours(frame_filtered, [box], -1, COLORS[1], thickness=3)
+
 
         cv2.imshow(WND_LIVE, frame)
         cv2.imshow(WND_FILTER, frame_filtered)
