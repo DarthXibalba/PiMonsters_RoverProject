@@ -14,7 +14,10 @@ import cv2
 from picamera.array import PiRGBArray
 from picamera import PiCamera
 
+import object_tracking as objtrack
 
+COLORS = [(0,0,255), (0,128,255), (0,255,255), (0,255,0), (255,0,0),    # Red, Orange, Yellow, Green, Blue
+        (255,255,0), (255,0,128), (255,0,255), (150,50,255), (0,75,150)] # Cyan, Purple, Magenta, Rose, Brown
 
 TEST_IMAGE_PATH = "../tf_classifier/ImageDataset/Capture/Pepsi/capture_pepsi_can_2.jpg"
 CALIBRATION_SET_PATH = "../tf_classifier/ImageDataset/Calibration/"
@@ -22,17 +25,18 @@ CALIBRATION_SET_PATH = "../tf_classifier/ImageDataset/Calibration/"
 '''
 [[hsv_low], [hsv_high]]
 <----- GARAGE CALIBRATION ----->
-Coke:  [140, 130, 60], [179, 255, 255]
+Coke:  [130, 100, 25], [179, 255, 255]
 Pepsi: [85, 187, 68], [142, 255, 255]
 Sprite:[67, 150, 14], [102, 255, 192]
 
 <----- BOOKER CONF CALIBRATION ----->
-Coke:  [140, 130, 60], [179, 255, 255]
+Coke:  [130, 100, 25], [179, 255, 255]
 Pepsi: [85, 187, 68], [142, 255, 255]
 Sprite:[67, 150, 14], [102, 255, 192]
 '''
+
 HSV = {
-'coke':  { 'lower':np.array([140, 130, 60]), 'upper':np.array([179, 255, 255]) },
+'coke':  { 'lower':np.array([130, 100, 25]), 'upper':np.array([179, 255, 255]) },
 'pepsi': { 'lower':np.array([85, 187, 68]), 'upper':np.array([142, 255, 255]) },
 'sprite':{ 'lower':np.array([67, 150, 14]), 'upper':np.array([102, 255, 192]) },
 'none':  { 'lower':np.array([0, 0, 0]),     'upper':np.array([179, 255, 255]) },
@@ -46,12 +50,12 @@ SH = 'Sat High'
 VL = 'Value Low'
 VH = 'Value High'
 WND_TRACK= 'Colorbars'
-WND_FRAME= 'Image Feed'
+WND_FILTER= 'Filtered Image Feed'
 WND_LIVE = 'Live Feed'
 
 WIDTH = 840
 HEIGHT = 600
-FRAMERATE = 24
+FRAMERATE = 30
 
 def do_nothing():
     pass
@@ -73,20 +77,29 @@ def preview_calibration():
         
         frame = cam_frame.array
         height, width = frame.shape[:2]
-        #frame = cv2.resize(frame, (width/2, height/2), interpolation=cv2.INTER_CUBIC)
         
         frame = cv2.GaussianBlur(frame, (5,5), 0)
         frame_hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
-        cv2.imshow(WND_LIVE, frame)
         
         # Get HSV range and mask
         hsv_low = HSV[obj_class]['lower']
         hsv_high = HSV[obj_class]['upper']
         hsv_mask = cv2.inRange(frame_hsv, hsv_low, hsv_high)
-        
-        # Display results
         frame_filtered = cv2.bitwise_and(frame, frame, mask=hsv_mask)
-        cv2.imshow(WND_FRAME, frame_filtered)
+
+        # Find ROI and draw results onto image
+        ROI = objtrack.findROI(frame, hsv_mask)
+        cv2.drawContours(frame_filtered, ROI['obj_contour'], -1, COLORS[3], thickness=3)
+
+        [x,y,w,h] = ROI['boundingRect']
+        cv2.rectangle(frame_filtered, (x,y), (x+w,y+h), COLORS[0], thickness=3)
+
+        box = cv2.boxPoints(ROI['rotatedRect'])
+        box = np.int0(box)
+        cv2.drawContours(frame_filtered, [box], -1, COLORS[1], thickness=3)
+
+        cv2.imshow(WND_LIVE, frame)
+        cv2.imshow(WND_FILTER, frame_filtered)
 
         key = cv2.waitKey(5)
         if (key == ord('c')):
@@ -137,7 +150,7 @@ def preview_liveFeed():
         
         # Display results
         frame_filtered = cv2.bitwise_and(frame, frame, mask=hsv_mask)
-        cv2.imshow(WND_FRAME, frame_filtered)
+        cv2.imshow(WND_FILTER, frame_filtered)
 
         key = cv2.waitKey(5) 
         if (key == ord('q')):
@@ -176,7 +189,7 @@ def preview_image(image_path):
         
         # Display results
         frame_filtered = cv2.bitwise_and(frame, frame, mask=hsv_mask)
-        cv2.imshow(WND_FRAME, frame_filtered)
+        cv2.imshow(WND_FILTER, frame_filtered)
         
         # Return hsv values or quit-code
         key = cv2.waitKey(5) 
@@ -227,7 +240,7 @@ def calibrate_class(query_path):
 
 if __name__ == '__main__':     
     # Create window and trackbars
-    cv2.namedWindow(WND_FRAME, cv2.WINDOW_AUTOSIZE)
+    cv2.namedWindow(WND_FILTER, cv2.WINDOW_AUTOSIZE)
     cv2.namedWindow(WND_TRACK, cv2.WINDOW_AUTOSIZE)
     cv2.resizeWindow(WND_TRACK, 600, 360)
     

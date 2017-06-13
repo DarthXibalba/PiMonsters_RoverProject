@@ -20,7 +20,54 @@ COLORS = [(0,0,255), (0,128,255), (0,255,255), (0,255,0), (255,0,0),    # Red, O
 
 
 
-def findROI(image_path, hsv_high, hsv_low, saveBoundingRect=False, displayResults=False):
+def findROI(image, mask_hsv):   
+    # Create some copies for displaying later
+    image_filtered = cv2.bitwise_and(image, image, mask = mask_hsv)
+    image_gray = cv2.cvtColor(image_filtered, cv2.COLOR_BGR2GRAY)
+
+    # Morphological Opening and Closing
+    kernel = np.ones((7,7))
+    image_gray = cv2.morphologyEx(image_gray, cv2.MORPH_OPEN, kernel)
+    image_gray = cv2.morphologyEx(image_gray, cv2.MORPH_CLOSE, kernel)     
+
+    # Find All Contours & Remove Contour children
+    # if hierarchy[0][i][2] == this contour's child if >= 0
+    # if hierarchy[0][i][3] == this contour's parent if >= 0
+    _, contours, hierarchy = cv2.findContours(image_gray, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)  
+    contourFilter = []
+    
+    for i in xrange(0, len(contours)):
+        # Keep all parents that do not have parents (oldest ancestor)
+        if (hierarchy[0][i][2] >= 0) and (hierarchy[0][i][3] == -1):
+            contourFilter.append(contours[i])    
+        # Keep all contours that have no relatives
+        elif (hierarchy[0][i][2] == -1) and (hierarchy[0][i][3] == -1):
+            contourFilter.append(contours[i])
+
+            
+    # Find the object contour (should be the longest contour)
+    obj_contour = sorted(contourFilter, key=len, reverse=True)[0]
+    #cv2.drawContours(image_drawObjCntr, obj_contour, -1, COLORS[3], thickness=3)
+
+    # Fit rectangles
+    x,y,w,h = cv2.boundingRect(obj_contour)
+    #cv2.rectangle(image_fitShapes, (x,y), (x+w,y+h), COLORS[0], thickness=3)
+    
+    rotatedRect = cv2.minAreaRect(obj_contour)
+    #box = cv2.boxPoints(rotatedRect)
+    #box = np.int0(box)
+    #cv2.drawContours(image_fitShapes, [box], -1, COLORS[1], thickness=3)
+
+    rtn = {
+        'obj_contour': obj_contour,
+        'boundingRect': [x,y,w,h],
+        'rotatedRect': rotatedRect
+    }
+    return rtn
+
+
+
+def findROI_demo(image_path, hsv_high, hsv_low, saveBoundingRect=False, displayResults=False):
     image = cv2.imread(image_path)
     image = cv2.GaussianBlur(image, (5,5), 0)
     image_hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
@@ -106,5 +153,5 @@ def findROI(image_path, hsv_high, hsv_low, saveBoundingRect=False, displayResult
           
 
 if __name__ == '__main__':
-    findROI(TEST_IMAGE_PATH, hsv_high, hsv_low, True, True)
+    findROI_demo(TEST_IMAGE_PATH, hsv_high, hsv_low, True, True)
     
