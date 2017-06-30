@@ -12,13 +12,13 @@ def control(request):
 	elif command == "stop":
 		pass
 		# run vision script to stop robot
-		
+
 	return JsonResponse({"success": status})
 
-
-
 def simple_arm_test(request):
+	# make the robot move randomly
 	status = simple_arm.open_claw()
+
 	return JsonResponse({"success": status})
 
 def test(request):
